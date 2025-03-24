@@ -1,2 +1,74 @@
 @import "tailwindcss";
 @source "../views";
+
+:first-child {
+    margin-top: 0;
+}
+
+table {
+    border-collapse: collapse;
+    margin: 0;
+    overflow: hidden;
+    table-layout: fixed;
+    width: 100%;
+
+    td,
+    th {
+        @apply border border-zinc-300;
+        box-sizing: border-box;
+        min-width: 1em;
+        padding: 6px 8px;
+        position: relative;
+        vertical-align: top;
+
+        >* {
+            margin-bottom: 0;
+        }
+    }
+
+    th {
+        @apply border border-zinc-300 bg-zinc-300;
+        font-weight: bold;
+        text-align: left;
+    }
+
+    .selectedCell:after {
+        @apply bg-sky-100/50;
+        content: "";
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        pointer-events: none;
+        position: absolute;
+        z-index: 2;
+    }
+
+    .column-resize-handle {
+        @apply bg-sky-500;
+        bottom: -1px;
+        pointer-events: none;
+        position: absolute;
+        right: -1px;
+        top: 0;
+        width: 2px;
+    }
+}
+
+.tableWrapper {
+    margin: 1.5rem 0;
+    overflow-x: auto;
+}
+
+.resize-cursor {
+    cursor: ew-resize;
+    cursor: col-resize;
+}
+
+[data-theme="customTheme"] {
+    @apply !max-w-full p-1 bg-white border rounded-lg shadow border-zinc-300;
+
+    .tippy-content {
+        @apply !p-0;
+    }
+}
