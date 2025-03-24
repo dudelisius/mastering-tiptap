@@ -1,6 +1,6 @@
 <div>
     <form wire:submit.prevent="save">
-        
+
         <x-tiptap wire:model="body"></x-tiptap>
 
         <div class="flex justify-end gap-2 pt-6 mt-6 border-t border-zinc-300">

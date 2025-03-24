@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Livewire;
 
 use Livewire\Component;
-use Livewire\Attributes\Computed;
 use Illuminate\Foundation\Inspiring;
 
 class Welcome extends Component
