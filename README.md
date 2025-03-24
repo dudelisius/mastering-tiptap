@@ -1,1 +1,1 @@
-# mastering-tiptap
+# Mastering TipTap
