@@ -9,11 +9,9 @@
         </div>
     </form>
 
-    @if ($output)
-        <div>
-            <label class="block py-2 text-zinc-400">Output:</label>
-            <div class="px-4 py-3 border rounded border-zinc-400 text-zinc-400">{{ $output }}</div>
-        </div>
-    @endif
+    <div wire:show="output">
+        <label class="block py-2 text-zinc-400">Output:</label>
+        <div wire:text="output" class="px-4 py-3 border rounded border-zinc-400 text-zinc-400"></div>
+    </div>
 
 </div>

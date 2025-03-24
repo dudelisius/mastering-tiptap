@@ -12,8 +12,7 @@
 
 <body class="flex justify-center bg-zinc-100">
     <div class="p-6 mt-12 bg-white shadow-xl w-2xl rounded-xl">
-        <h1 class="mb-6 text-xl font-medium">{{ $title }}</h1>
-
+        <h1 class="mb-8 text-xl font-medium">{{ $title }}</h1>
        {{ $slot }}
     </div>
 </body>
