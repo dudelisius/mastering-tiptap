@@ -72,3 +72,27 @@ table {
         @apply !p-0;
     }
 }
+
+.ProseMirror-selectednode {
+    @apply outline outline-dashed outline-sky-500;
+
+    .resize-handle {
+        @apply absolute z-50 block bg-white border rounded-full size-2 border-sky-500;
+
+        &.top-left {
+            @apply -top-1 -left-1 cursor-nwse-resize;
+        }
+
+        &.top-right {
+            @apply -top-1 -right-1 cursor-nesw-resize;
+        }
+
+        &.bottom-left {
+            @apply -bottom-1 -left-1 cursor-nesw-resize;
+        }
+
+        &.bottom-right {
+            @apply -bottom-1 -right-1 cursor-nwse-resize;
+        }
+    }
+}

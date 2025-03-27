@@ -1,4 +1,4 @@
-@php $title = 'Mastering Tiptap - Adding Images with an URL' @endphp
+@php $title = 'Mastering Tiptap - Resizing Images' @endphp
 
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -11,7 +11,7 @@
 </head>
 
 <body class="flex justify-center bg-zinc-100">
-    <div class="p-6 mt-12 bg-white shadow-xl w-2xl rounded-xl">
+    <div class="p-6 my-12 bg-white shadow-xl w-2xl rounded-xl">
         <h1 class="mb-8 text-xl font-medium">{{ $title }}</h1>
        {{ $slot }}
     </div>

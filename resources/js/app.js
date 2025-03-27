@@ -5,7 +5,7 @@ import TableCell from '@tiptap/extension-table-cell'
 import TableHeader from '@tiptap/extension-table-header'
 import TableRow from '@tiptap/extension-table-row'
 import BubbleMenu from '@tiptap/extension-bubble-menu'
-import Image from '@tiptap/extension-image'
+import { ImageResize, ImageDimensions } from './TipTapImageResize'
 
 document.addEventListener('alpine:init', () => {
     Alpine.data('tiptap', (content) => {
@@ -20,6 +20,8 @@ document.addEventListener('alpine:init', () => {
                 editor = new Editor({
                     element: this.$refs.editor,
                     content: this.content,
+                    content: '',
+                    // content: '<img src="https://placehold.co/1000x800/orange/white?text=Image!"/>',
                     extensions: [
                         StarterKit,
                         Table.configure({
@@ -39,7 +41,7 @@ document.addEventListener('alpine:init', () => {
                                 return editor.isActive('table') || editor.isActive('tableCell') || editor.isActive('tableHeader') || editor.isActive('tableRow');
                             }
                         }),
-                        Image.configure({
+                        ImageResize.configure({
                             inline: true,
                         })
                     ],
@@ -112,9 +114,16 @@ document.addEventListener('alpine:init', () => {
             deleteTable() {
                 editor.chain().focus().deleteTable().run()
             },
-            insertImage() {
-                const url = window.prompt('Image URL');
-                editor.chain().focus().setImage({ src: url }).run();
+            async insertImage() {
+                const url = window.prompt("Image URL");
+                if (url) {
+                    try {
+                        const dimensions = await ImageDimensions(url);
+                        editor.commands.setImage({src: url, ...dimensions});
+                    } catch (error) {
+                        console.error("Error loading image dimensions:", error);
+                    }
+                }
             }
         }
     })
