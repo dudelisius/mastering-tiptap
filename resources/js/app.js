@@ -20,8 +20,6 @@ document.addEventListener('alpine:init', () => {
                 editor = new Editor({
                     element: this.$refs.editor,
                     content: this.content,
-                    content: '',
-                    // content: '<img src="https://placehold.co/1000x800/orange/white?text=Image!"/>',
                     extensions: [
                         StarterKit,
                         Table.configure({
