@@ -1,4 +1,4 @@
-@php $title = 'Mastering Tiptap - Adding Tables with a Bubble Menu' @endphp
+@php $title = 'Mastering Tiptap - Adding Images with an URL' @endphp
 
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">

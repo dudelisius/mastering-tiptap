@@ -6,6 +6,7 @@
     <div x-ref="toolbar" class="mb-2">
         <x-tiptap-button @click="toggleBold()" x-bind:class="{ '!bg-sky-500 !border-sky-500 !text-white' : isActive('bold', updatedAt) }">Bold</x-tiptap-button>
         <x-tiptap-button @click="insertTable()">Table</x-tiptap-button>
+        <x-tiptap-button @click="insertImage()">Image</x-tiptap-button>
     </div>
 
     <div x-ref="editor" class="px-4 !py-3 border rounded border-zinc-500 focus-within:border-sky-500"></div>

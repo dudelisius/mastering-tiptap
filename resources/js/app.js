@@ -5,6 +5,7 @@ import TableCell from '@tiptap/extension-table-cell'
 import TableHeader from '@tiptap/extension-table-header'
 import TableRow from '@tiptap/extension-table-row'
 import BubbleMenu from '@tiptap/extension-bubble-menu'
+import Image from '@tiptap/extension-image'
 
 document.addEventListener('alpine:init', () => {
     Alpine.data('tiptap', (content) => {
@@ -38,6 +39,9 @@ document.addEventListener('alpine:init', () => {
                                 return editor.isActive('table') || editor.isActive('tableCell') || editor.isActive('tableHeader') || editor.isActive('tableRow');
                             }
                         }),
+                        Image.configure({
+                            inline: true,
+                        })
                     ],
                     onCreate({ editor }) {
                         _this.updatedAt = Date.now()
@@ -108,6 +112,10 @@ document.addEventListener('alpine:init', () => {
             deleteTable() {
                 editor.chain().focus().deleteTable().run()
             },
+            insertImage() {
+                const url = window.prompt('Image URL');
+                editor.chain().focus().setImage({ src: url }).run();
+            }
         }
     })
 })
