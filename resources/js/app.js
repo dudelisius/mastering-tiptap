@@ -5,16 +5,17 @@ import TableCell from '@tiptap/extension-table-cell'
 import TableHeader from '@tiptap/extension-table-header'
 import TableRow from '@tiptap/extension-table-row'
 import BubbleMenu from '@tiptap/extension-bubble-menu'
-import { ImageResize, ImageDimensions } from './TipTapImageResize'
+import { ImageResize, imageDimensions, imageDropUpload } from './TiptapImage'
 import TextAlign from '@tiptap/extension-text-align'
 
 document.addEventListener('alpine:init', () => {
-    Alpine.data('tiptap', (content) => {
+    Alpine.data('tiptap', (content, livewireComponent) => {
         let editor
 
         return {
             content: content,
             updatedAt: Date.now(),
+            listeners: [],
             init() {
                 const _this = this
 
@@ -42,6 +43,7 @@ document.addEventListener('alpine:init', () => {
                         }),
                         ImageResize.configure({
                             inline: true,
+
                         }),
                         TextAlign.configure({
                             types: ['heading', 'paragraph'],
@@ -61,12 +63,20 @@ document.addEventListener('alpine:init', () => {
                         attributes: {
                             class: 'focus:outline-none',
                         },
+                        handleDrop: function (view, event, slice, moved) {
+                            imageDropUpload(editor, view, event, moved, livewireComponent);
+                        }
                     }
                 })
                 this.$watch('content', (content) => {
                     if (content === editor.getHTML()) return
                     editor.commands.setContent(content, false)
                 })
+            },
+            destroy() {
+                _this.listeners.forEach((listener) => {
+                    listener();
+                });
             },
             isLoaded() {
                 return editor
@@ -120,8 +130,8 @@ document.addEventListener('alpine:init', () => {
                 const url = window.prompt("Image URL");
                 if (url) {
                     try {
-                        const dimensions = await ImageDimensions(url);
-                        editor.commands.setImage({src: url, ...dimensions});
+                        const dimensions = await imageDimensions(url);
+                        editor.commands.setImage({ src: url, ...dimensions });
                     } catch (error) {
                         console.error("Error loading image dimensions:", error);
                     }

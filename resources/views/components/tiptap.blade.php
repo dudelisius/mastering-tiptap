@@ -1,5 +1,5 @@
 <div
-    x-data="tiptap($wire.entangle('{{ $attributes->wire('model')->value() }}'))"
+    x-data="tiptap($wire.entangle('{{ $attributes->wire('model')->value() }}'), $wire)"
     wire:ignore
     {{ $attributes->whereDoesntStartWith('wire:model') }}
 >

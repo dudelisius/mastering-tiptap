@@ -96,3 +96,7 @@ table {
         }
     }
 }
+
+img.uploading {
+    @apply animate-pulse cursor-progress;
+}
