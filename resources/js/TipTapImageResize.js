@@ -71,6 +71,7 @@ export const ImageResize = Image.extend({
 
             const positions = ['top-left', 'top-right', 'bottom-left', 'bottom-right'];
             const handles = {};
+
             positions.forEach((pos) => {
                 const handle = createHandle(pos);
                 handles[pos] = handle;
@@ -79,6 +80,7 @@ export const ImageResize = Image.extend({
 
             positions.forEach((position) => {
                 const handle = handles[position];
+
                 handle.addEventListener('mousedown', (event) => {
                     event.preventDefault();
 

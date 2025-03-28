@@ -6,6 +6,7 @@ import TableHeader from '@tiptap/extension-table-header'
 import TableRow from '@tiptap/extension-table-row'
 import BubbleMenu from '@tiptap/extension-bubble-menu'
 import { ImageResize, ImageDimensions } from './TipTapImageResize'
+import TextAlign from '@tiptap/extension-text-align'
 
 document.addEventListener('alpine:init', () => {
     Alpine.data('tiptap', (content) => {
@@ -20,8 +21,6 @@ document.addEventListener('alpine:init', () => {
                 editor = new Editor({
                     element: this.$refs.editor,
                     content: this.content,
-                    content: '',
-                    // content: '<img src="https://placehold.co/1000x800/orange/white?text=Image!"/>',
                     extensions: [
                         StarterKit,
                         Table.configure({
@@ -43,6 +42,9 @@ document.addEventListener('alpine:init', () => {
                         }),
                         ImageResize.configure({
                             inline: true,
+                        }),
+                        TextAlign.configure({
+                            types: ['heading', 'paragraph'],
                         })
                     ],
                     onCreate({ editor }) {
@@ -124,6 +126,9 @@ document.addEventListener('alpine:init', () => {
                         console.error("Error loading image dimensions:", error);
                     }
                 }
+            },
+            setTextAlign(align) {
+                editor.chain().focus().setTextAlign(align).run()
             }
         }
     })
