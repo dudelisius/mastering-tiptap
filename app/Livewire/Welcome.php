@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace App\Livewire;
 
+use App\Models\Page;
 use Livewire\Component;
 use Livewire\WithFileUploads;
-use Illuminate\Foundation\Inspiring;
 use Livewire\Attributes\Validate;
+use Illuminate\Foundation\Inspiring;
 
 class Welcome extends Component
 {
@@ -19,6 +20,16 @@ class Welcome extends Component
     #[Validate('required|image|max:500')]
     public $image;
 
+    public Page $page;
+
+    public function mount()
+    {
+        $this->page = Page::find(1)->first();
+
+        $this->body = $this->page->body;
+        $this->output = $this->page->body;
+    }
+
     public function setQuote()
     {
         $this->body = str(Inspiring::quote())->stripTags()->replace(["\r", "\n"], '')->value;
@@ -27,6 +38,8 @@ class Welcome extends Component
     public function save()
     {
         $this->output = $this->body;
+
+        $this->page->update(['body' => $this->body]);
     }
 
     public function imageUpload()
@@ -37,15 +50,10 @@ class Welcome extends Component
             return ['errors' => $e->errors()];
         }
 
-        $fileInfo = pathinfo($this->image->getClientOriginalName());
-        $uniqueName = (string) str()->uuid() . '.' . $fileInfo['extension'];
-
-        $this->image->storeAs('uploads', $uniqueName, 'public');
+        $this->page->addMedia($this->image)->toMediaCollection();
 
         return [
-            'originalFileName' => $fileInfo['filename'],
-            'fileName' => $uniqueName,
-            'src' => asset('uploads/' . $uniqueName)
+            'src' => $this->page->getFirstMediaUrl()
         ];
     }
 }
