@@ -50,10 +50,10 @@ class Welcome extends Component
             return ['errors' => $e->errors()];
         }
 
-        $this->page->addMedia($this->image)->toMediaCollection();
+        $media = $this->page->addMedia($this->image)->toMediaCollection();
 
         return [
-            'src' => $this->page->getFirstMediaUrl()
+            'src' => $media->getFullUrl()
         ];
     }
 }
