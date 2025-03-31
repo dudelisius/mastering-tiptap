@@ -1,6 +1,5 @@
 import Image from '@tiptap/extension-image';
 
-// Utility: Generates a unique ID using crypto if available
 function generateUniqueId(prefix = 'id') {
     if (window.crypto && crypto.getRandomValues) {
         return (
@@ -32,7 +31,6 @@ function readFileAsDataUrl(file) {
     });
 }
 
-// Helper: Computes new dimensions based on mouse movement and a fixed aspect ratio.
 function computeNewDimensions(startWidth, startHeight, startX, startY, currentX, currentY, position) {
     const ratio = startHeight / startWidth;
     const dx = currentX - startX;
@@ -71,7 +69,6 @@ export async function imageDropUpload(editor, view, event, moved, component) {
         const fileDataUrl = await readFileAsDataUrl(file);
         const dimensions = await imageDimensions(fileDataUrl);
 
-        // Insert a placeholder image with uploading class.
         editor.commands.setImage({
             pos: coordinates.pos,
             src: fileDataUrl,
@@ -80,7 +77,6 @@ export async function imageDropUpload(editor, view, event, moved, component) {
             id: placeholderId,
         });
 
-        // Wrap the component.upload callback API into a promise.
         await new Promise((resolve, reject) => {
             component.upload(
                 'image',
@@ -90,19 +86,27 @@ export async function imageDropUpload(editor, view, event, moved, component) {
             );
         });
 
-        // After the upload, call the imageUpload API.
         const fileInfo = await component.call('imageUpload');
+
         if (fileInfo.errors) {
             imageDelete(editor, placeholderId);
             console.error('Error processing the image:', fileInfo.errors);
             return;
         }
-        imageUpdateAttributes(editor, placeholderId, {
-            src: fileInfo.src,
-            ...dimensions,
-            class: '',
-            id: '',
-        });
+
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(fileInfo, "text/html");
+
+        const imgElement = doc.body.firstElementChild;
+
+        const attributes = Array.from(imgElement.attributes).reduce((acc, attr) => {
+            acc[attr.name] = attr.value;
+            return acc;
+        }, {});
+
+        console.log(attributes)
+
+        imageUpdateAttributes(editor, placeholderId, attributes);
     } catch (error) {
         imageDelete(editor, placeholderId);
         console.error('Error processing the image:', error);
@@ -162,6 +166,24 @@ export const ImageResize = Image.extend({
                 renderHTML: (attributes) =>
                     attributes.id ? { id: attributes.id } : {},
             },
+            srcset: {
+                default: null,
+                parseHTML: (element) => element.getAttribute('srcset'),
+                renderHTML: (attributes) =>
+                    attributes.srcset ? { srcset: attributes.srcset } : {},
+            },
+            onload: {
+                default: null,
+                parseHTML: (element) => element.getAttribute('onload'),
+                renderHTML: (attributes) =>
+                    attributes.onload ? { onload: attributes.onload } : {},
+            },
+            sizes: {
+                default: null,
+                parseHTML: (element) => element.getAttribute('sizes'),
+                renderHTML: (attributes) =>
+                    attributes.sizes ? { sizes: attributes.sizes } : {},
+            },
         };
     },
 
@@ -200,6 +222,18 @@ export const ImageResize = Image.extend({
 
             if (node.attrs.id) {
                 img.setAttribute('id', node.attrs.id);
+            }
+
+            if (node.attrs.srcset) {
+                img.setAttribute('srcset', node.attrs.srcset);
+            }
+
+            if (node.attrs.onload) {
+                img.setAttribute('onload', node.attrs.onload);
+            }
+
+            if (node.attrs.sizes) {
+                img.setAttribute('sizes', node.attrs.sizes);
             }
 
             container.appendChild(img);

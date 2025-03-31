@@ -17,7 +17,7 @@ class Welcome extends Component
     public string $body = 'Hello world! :-)';
     public string $output = '';
 
-    #[Validate('required|image|max:500')]
+    #[Validate('required|image|max:3000')]
     public $image;
 
     public Page $page;
@@ -50,10 +50,8 @@ class Welcome extends Component
             return ['errors' => $e->errors()];
         }
 
-        $media = $this->page->addMedia($this->image)->toMediaCollection();
+        $responsiveMedia = $this->page->addMedia($this->image)->toMediaCollection('responsive');
 
-        return [
-            'src' => $media->getFullUrl()
-        ];
+        return $responsiveMedia('responsive')->toHtml();
     }
 }

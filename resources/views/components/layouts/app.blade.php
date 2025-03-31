@@ -1,4 +1,4 @@
-@php $title = 'Mastering Tiptap - Attach Images To A Model' @endphp
+@php $title = 'Mastering Tiptap - Create Responsive Images' @endphp
 
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
